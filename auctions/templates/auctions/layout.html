@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Auctions{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        /* Estilos Globais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            padding-bottom: 50px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header e Navegação */
+        h1 {
+            color: #2c3e50;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .nav {
+            background-color: #3498db;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item {
+            margin-right: 10px;
+        }
+        
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: #f1c40f !important;
+            transform: translateY(-2px);
+        }
+        
+        .user-info {
+            color: white;
+            padding: 8px 15px;
+            background-color: #2980b9;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        
+        hr {
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+        
+        /* Cards e Listagens */
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card-img-top {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .card-text {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        
+        /* Botões */
+        .btn {
+            border-radius: 5px;
+            font-weight: 500;
+            padding: 8px 20px;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            border-color: #f39c12;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d35400;
+            border-color: #d35400;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-primary {
+            color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* Formulários */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+        }
+        
+        /* Alertas e Mensagens */
+        .alert {
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        
+        /* Listas */
+        .list-group-item {
+            border: none;
+            border-bottom: 1px solid #eee;
+            padding: 15px 20px;
+        }
+        
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Página de Detalhes */
+        .listing-detail img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .bid-history, .comment-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .comment {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .comment-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        /* Rodapé */
+        footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            text-align: center;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+            }
+            
+            .nav-item {
+                margin-bottom: 10px;
+            }
+            
+            .user-info {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Auctions</h1>
+        <div>
+            {% if user.is_authenticated %}
+                <span class="user-info">Signed in as <strong>{{ user.username }}</strong></span>
+            {% else %}
+                <span class="user-info">Not signed in.</span>
+            {% endif %}
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+        <hr>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block body %}
+        {% endblock %}
+        
+        <footer>
+            <p>© 2025 Auctions. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

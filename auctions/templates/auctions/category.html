@@ -1,0 +1,37 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="container">
+        <h2>Active Listings in Category: <strong>{{ category }}</strong></h2>
+        
+        {% if listings %}
+            <div class="row">
+                {% for listing in listings %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            {% if listing.image_url %}
+                                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="card-img-top" style="max-height: 300px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <a href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
+                                </h3>
+                                <p class="card-text">{{ listing.description|truncatechars:150 }}</p>
+                                <p class="h5">Current Price: <strong>${{ listing.current_price }}</strong></p>
+                                <small class="text-muted">Created by: {{ listing.owner.username }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-4">
+                No active listings found in this category.
+            </div>
+        {% endif %}
+        
+        <a href="{% url 'categories' %}" class="btn btn-outline-primary mt-4">
+            &larr; Back to All Categories
+        </a>
+    </div>
+{% endblock %}
